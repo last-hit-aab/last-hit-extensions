@@ -170,6 +170,9 @@ var ExtensionEntryPointHelper = /** @class */ (function () {
                         if (!fs_1.default.statSync(mainfile).isFile()) {
                             throw new Error("Main entry file[" + mainfile + "] is not a file.");
                         }
+                        if (!path_1.default.isAbsolute(mainfile)) {
+                            mainfile = path_1.default.join(process.cwd(), mainfile);
+                        }
                         module_1 = uri_1.URI.file(mainfile);
                         extension = this.createWrapper((function () {
                             var extension = require(module_1.fsPath);

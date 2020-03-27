@@ -156,12 +156,15 @@ class ExtensionEntryPointHelper implements IExtensionEntryPointHelper {
 			if (!main) {
 				main = 'index.js';
 			}
-			const mainfile = path.join(this.getPackageFolder(), main);
+			let mainfile = path.join(this.getPackageFolder(), main);
 			if (!fs.existsSync(mainfile)) {
 				throw new Error(`Main entry file[${mainfile}] not found.`);
 			}
 			if (!fs.statSync(mainfile).isFile()) {
 				throw new Error(`Main entry file[${mainfile}] is not a file.`);
+			}
+			if (!path.isAbsolute(mainfile)) {
+				mainfile = path.join(process.cwd(), mainfile);
 			}
 			const module: URI = URI.file(mainfile);
 			const extension: IExtensionEntryPointWrapper<any> = this.createWrapper(
